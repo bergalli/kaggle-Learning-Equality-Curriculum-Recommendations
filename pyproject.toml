@@ -1,0 +1,28 @@
+[tool.poetry.dependencies]
+python = ">=3.9.0,<3.10"
+kedro = "^0.18.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+
+[tool.kedro]
+package_name = "curriculum_recommendations"
+project_name = "Curriculum Recommendations"
+project_version = "0.18.4"
+
+[tool.isort]
+profile = "black"
+
+[tool.pytest.ini_options]
+addopts = """
+--cov-report term-missing \
+--cov src/curriculum_recommendations -ra"""
+
+[tool.coverage.report]
+fail_under = 0
+show_missing = true
+exclude_lines = ["pragma: no cover", "raise NotImplementedError"]
