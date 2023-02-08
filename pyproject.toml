@@ -1,12 +1,22 @@
+[tool.poetry]
+name = "kaggle-Learning-Equality-Curriculum-Recommendations"
+version = "0.1.0"
+description = ""
+authors = ["bertrand <bertrand.gallice.pro@gmail.com>"]
+
+
 [tool.poetry.dependencies]
 python = ">=3.9.0,<3.10"
 kedro = "^0.18.4"
+pandas = "^1.5.3"
+numpy = "^1.24.2"
+torch = "^1.13.1"
+transformers = "^4.26.0"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
 
 
 [tool.kedro]
