@@ -2,6 +2,7 @@
 This is a boilerplate pipeline 'data_prep'
 generated using Kedro 0.18.4
 """
+import pandas as pd
 import torch
 from torch.utils.data import DataLoader
 from transformers import DataCollatorWithPadding
@@ -11,20 +12,7 @@ import numpy as np
 from .torch_embeddings import MultilingualSentenceEmbedding, UNSDataset
 
 
-def clean_topics(
-    content,
-    correlations,
-    sample_submission,
-    topics,
-):
-    topics["title"].fillna("", inplace=True)
-    content["title"].fillna("", inplace=True)
-    print(f"topics.shape: {topics.shape}")
-    print(f"content.shape: {content.shape}")
-    return False
-
-
-def read_data(topics, content, sample_submission):
+def read_data(topics, content):
     # Merge topics with sample submission to only infer test topics
     # topics = topics.merge(sample_submission, how="inner", left_on="id", right_on="topic_id")
     # Fillna titles
@@ -66,11 +54,24 @@ def read_data(topics, content, sample_submission):
     return topics, content
 
 
-def get_embeddings(tmp_topics, tmp_content, device="cpu"):
+def filter_dataframe_length(
+    content: pd.DataFrame,
+    correlations,
+    sample_submission,
+    topics: pd.DataFrame,
+    perc_of_rows_to_keep,
+):
+    content = content.sample(frac=perc_of_rows_to_keep)
+    topics = topics.sample(frac=perc_of_rows_to_keep)
+
+    return content, topics
+
+
+def get_embeddings(topics_cleaned, content_cleaned, device="cpu"):
     # Create topics dataset
-    topics_dataset = UNSDataset(tmp_topics)
+    topics_dataset = UNSDataset(topics_cleaned)
     # Create content dataset
-    content_dataset = UNSDataset(tmp_content)
+    content_dataset = UNSDataset(content_cleaned)
     # Create topics and content dataloaders
     topics_loader = DataLoader(
         topics_dataset,
@@ -115,3 +116,13 @@ def get_embeddings(tmp_topics, tmp_content, device="cpu"):
     content_preds = _get_embeddings(content_loader, model, device)
 
     return topics_preds, content_preds
+
+
+def train_topic_assignment_model(
+    topics_embeddings,
+    content_embeddings,
+    topics_cleaned,
+    content_cleaned,
+    sample_submission,
+):
+    return

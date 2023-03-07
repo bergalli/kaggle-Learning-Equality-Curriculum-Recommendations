@@ -36,7 +36,6 @@ addopts = """
 --cov src/curriculum_recommendations -ra
 """
 
-
 [tool.coverage.report]
 fail_under = 0
 show_missing = true

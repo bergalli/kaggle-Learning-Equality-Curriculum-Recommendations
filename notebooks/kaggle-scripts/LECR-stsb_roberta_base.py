@@ -21,11 +21,11 @@ import tokenizers
 import transformers
 from transformers import AutoTokenizer, AutoModel, AutoConfig
 from transformers import get_cosine_schedule_with_warmup, DataCollatorWithPadding
-import cupy as cp
-from cuml.metrics import pairwise_distances
-from cuml.neighbors import NearestNeighbors
+# import cupy as cp
+# from cuml.metrics import pairwise_distances
+# from cuml.neighbors import NearestNeighbors
 
-TOKENIZERS_PARALLELISM = false
+TOKENIZERS_PARALLELISM = False
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
@@ -82,7 +82,7 @@ class CFG5:
 CFG_list = [CFG1, CFG2, CFG3]
 
 
-def read_data(cfg):
+def read_data():
     topics = pd.read_csv('/kaggle/input/learning-equality-curriculum-recommendations/topics.csv')
     content = pd.read_csv('/kaggle/input/learning-equality-curriculum-recommendations/content.csv')
     sample_submission = pd.read_csv('/kaggle/input/learning-equality-curriculum-recommendations/sample_submission.csv')
@@ -594,7 +594,7 @@ def inference(test, cfg, _idx):
 if __name__ == "__main__":
     for _idx, CFG in enumerate(CFG_list):
         # Read data
-        tmp_topics, tmp_content = read_data(CFG)
+        tmp_topics, tmp_content = read_data()
         # Run nearest neighbors
         tmp_topics, tmp_content = get_neighbors(tmp_topics, tmp_content, CFG)
         gc.collect()

@@ -22,18 +22,18 @@ from scipy.spatial.distance import cosine
 from itertools import combinations
 
 
+@pytest.fixture(scope="module")
+def embedding_model():
+    model = MultilingualSentenceEmbedding()
+    return model
+
+
 @pytest.fixture
 def multilingual_same_sentences():
     texts = pd.Series(
         ["the sky is blue", "le ciel est bleu", "der Himmel ist blau", "el cielo es azul"]
     ).to_frame("title")
     return texts
-
-
-@pytest.fixture(scope="module")
-def embedding_model():
-    model = MultilingualSentenceEmbedding()
-    return model
 
 
 @pytest.fixture
